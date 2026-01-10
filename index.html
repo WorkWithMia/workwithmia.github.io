@@ -3607,44 +3607,59 @@
       }
     });
 
-    // =========================================================
-    // Popup: "Coded by Mia Lavana"
-    // =========================================================
-    (function () {
-      const popup = document.getElementById('popup');
-      const bar = document.getElementById('bar');
-      const percentEl = document.getElementById('popupPercent');
+   // =========================================================
+// Popup: "Coded by Mia Lavana"  ✅ Green loads from 0–100%
+// =========================================================
+(function () {
+  const popup = document.getElementById('popup');
+  const bar = document.getElementById('bar');
+  const percentEl = document.getElementById('popupPercent');
 
-      const loadDuration = 2000;
-      const holdDuration = 2500;
-      let startTime = null;
+  // Safety: if markup isn't present, do nothing (prevents console errors)
+  if (!popup || !bar || !percentEl) return;
 
-      function showPopup() {
-        popup.classList.add('show');
+  const loadDuration = 2000; // ms to reach 100%
+  const holdDuration = 2500; // ms to keep popup visible at 100%
+  let startTime = null;
 
-        function animate(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          const progress = Math.min(elapsed / loadDuration, 1);
-          const percent = Math.round(progress * 100);
+  function showPopup() {
+    popup.classList.add('show');
 
-          bar.style.width = percent + '%';
-          percentEl.textContent = percent + '%';
+    // ✅ Reset every run
+    startTime = null;
+    bar.classList.remove('complete'); // harmless if you keep CSS
+    bar.style.width = '0%';
+    percentEl.textContent = '0%';
 
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            bar.style.width = '100%';
-            percentEl.textContent = '100%';
-            setTimeout(() => popup.classList.remove('show'), holdDuration);
-          }
-        }
+    // ✅ FORCE green from the start (so it’s green while loading 0–100)
+    bar.style.background = 'linear-gradient(90deg, #16a34a, #22c55e, #4ade80)';
 
+    function animate(timestamp) {
+      if (!startTime) startTime = timestamp;
+
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / loadDuration, 1);
+      const percent = Math.round(progress * 100);
+
+      bar.style.width = percent + '%';
+      percentEl.textContent = percent + '%';
+
+      if (progress < 1) {
         requestAnimationFrame(animate);
+      } else {
+        bar.style.width = '100%';
+        percentEl.textContent = '100%';
+        setTimeout(() => popup.classList.remove('show'), holdDuration);
       }
+    }
 
-      window.addEventListener('load', () => { setTimeout(showPopup, 500); });
-    })();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(showPopup, 500);
+  });
+})();
 
     // =========================================================
     // ✅ TOOL MODAL OPEN/CLOSE + TOOLS LOGIC
