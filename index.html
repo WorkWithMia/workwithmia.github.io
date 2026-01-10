@@ -4308,5 +4308,232 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
       render();
     })();
   </script>
+
+  <script>
+/* ==============================
+   Retail Sales Forecast — Micro Toast (bulletproof)
+   - Triggers on the Hot New Releases card with: .hotCard[data-tool="forecast"]
+   - Works even if other scripts intercept clicks
+   - Creates the toast markup automatically if missing
+   - Ensures CSS + z-index are applied
+   ============================== */
+(() => {
+  // ====== CONFIG ======
+  const BASE_VALUE = 10396;              // baseline number
+  const START_DATE = "2026-01-10";       // YYYY-MM-DD (day BASE_VALUE was true)
+  const DAILY_ADD  = 15;                // +15/day
+  const RAND_MIN   = 1;                 // +1–3/day (stable per day per device)
+  const RAND_MAX   = 3;
+  const STORAGE_KEY = "rf_calc_counter_v2";
+  const TOOL_SELECTOR = '.hotCard[data-tool="forecast"]'; // your screenshot shows data-tool="forecast"
+  // ====================
+
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const ymdUTC = (d) => `${d.getUTCFullYear()}-${pad2(d.getUTCMonth()+1)}-${pad2(d.getUTCDate())}`;
+
+  function daysBetweenUTC(aYMD, bYMD){
+    const [ay,am,ad] = aYMD.split("-").map(Number);
+    const [by,bm,bd] = bYMD.split("-").map(Number);
+    const a = Date.UTC(ay, am-1, ad);
+    const b = Date.UTC(by, bm-1, bd);
+    return Math.max(0, Math.floor((b - a) / 86400000));
+  }
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  function getTodayTarget(){
+    const today = ymdUTC(new Date());
+    const dayCount = daysBetweenUTC(START_DATE, today);
+
+    let state;
+    try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { state = {}; }
+
+    if (state.lastYMD !== today) {
+      state.lastYMD = today;
+      state.dailyRand = randInt(RAND_MIN, RAND_MAX);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    return BASE_VALUE + (dayCount * DAILY_ADD) + (Number(state.dailyRand) || 0);
+  }
+
+  function ensureToastExists(){
+    let toast = document.getElementById("microToast");
+    let slot  = document.getElementById("rfSlot");
+    let close = document.getElementById("microToastClose");
+
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "microToast";
+      toast.className = "microToast";
+      toast.setAttribute("role", "status");
+      toast.setAttribute("aria-live", "polite");
+      toast.setAttribute("aria-atomic", "true");
+
+      toast.innerHTML = `
+        <button class="microToastClose" id="microToastClose" aria-label="Close">×</button>
+        <div class="microToastMsg">
+          <span>Used in</span>
+          <span id="rfSlot" class="rfSlot" aria-label="Used in calculations">0</span><span class="rfPlus">+</span>
+          <span>calculations globally</span>
+        </div>
+      `;
+      document.body.appendChild(toast);
+
+      slot  = toast.querySelector("#rfSlot");
+      close = toast.querySelector("#microToastClose");
+    }
+
+    // Inject CSS once (won’t override your styles if you already have them)
+    if (!document.getElementById("rfToastStyles")) {
+      const style = document.createElement("style");
+      style.id = "rfToastStyles";
+      style.textContent = `
+        .microToast{
+          position: fixed;
+          right: 22px;
+          bottom: 22px;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+
+          padding: 12px 14px;
+          border-radius: 999px;
+
+          background: rgba(255,255,255,.92);
+          border: 1px solid rgba(17,17,17,.10);
+          box-shadow: 0 18px 55px rgba(0,0,0,.12);
+          backdrop-filter: blur(14px);
+
+          opacity: 0;
+          transform: translateX(16px);
+          transition: opacity .55s ease, transform .55s ease;
+
+          pointer-events: none;
+          z-index: 999999;
+
+          font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+          color: #111;
+        }
+        .microToast.show{
+          opacity: 1;
+          transform: translateX(0);
+          pointer-events: auto;
+        }
+        .microToastMsg{
+          display: inline-flex;
+          align-items: baseline;
+          gap: 6px;
+          font-size: 15px;
+          line-height: 1;
+          white-space: nowrap;
+        }
+        .rfSlot{
+          font-variant-numeric: tabular-nums;
+          font-weight: 700;
+          letter-spacing: .2px;
+        }
+        .rfPlus{
+          font-weight: 700;
+          margin-left: -4px;
+        }
+        .microToastClose{
+          width: 28px;
+          height: 28px;
+          border-radius: 999px;
+          border: 1px solid rgba(17,17,17,.10);
+          background: rgba(255,255,255,.9);
+          cursor: pointer;
+          line-height: 0;
+          display: grid;
+          place-items: center;
+          font-size: 18px;
+          color: #111;
+        }
+        .microToastClose:hover{ background: rgba(255,255,255,1); }
+      `;
+      document.head.appendChild(style);
+    }
+
+    // Re-grab in case markup existed but slot/close missing
+    toast = document.getElementById("microToast");
+    slot  = document.getElementById("rfSlot");
+    close = document.getElementById("microToastClose");
+
+    return { toast, slot, close };
+  }
+
+  function slotRollTo(slotEl, target){
+    const start = Math.max(0, target - randInt(80, 220));
+    const duration = 900;
+    const startTime = performance.now();
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    function tick(now){
+      const t = Math.min(1, (now - startTime) / duration);
+      const value = Math.round(start + (target - start) * easeOutCubic(t));
+
+      if (t < 0.35) {
+        slotEl.textContent = Math.max(0, value + randInt(-9, 9)).toLocaleString();
+      } else {
+        slotEl.textContent = value.toLocaleString();
+      }
+
+      if (t < 1) requestAnimationFrame(tick);
+      else slotEl.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function init(){
+    const { toast, slot, close } = ensureToastExists();
+    if (!toast || !slot) return;
+
+    let hideTimer = null;
+
+    function showToast(){
+      const target = getTodayTarget();
+      toast.classList.add("show");
+      slot.textContent = "0";
+      slotRollTo(slot, target);
+
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => toast.classList.remove("show"), 5200);
+    }
+
+    // Click: capture + bubble (some scripts stop propagation; we cover both)
+    document.addEventListener("click", (e) => {
+      const card = e.target && e.target.closest ? e.target.closest(TOOL_SELECTOR) : null;
+      if (!card) return;
+      showToast();
+    }, true);
+
+    document.addEventListener("click", (e) => {
+      const card = e.target && e.target.closest ? e.target.closest(TOOL_SELECTOR) : null;
+      if (!card) return;
+      showToast();
+    }, false);
+
+    // Keyboard: Enter/Space when card is focused
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const el = document.activeElement;
+      const card = el && el.closest ? el.closest(TOOL_SELECTOR) : null;
+      if (!card) return;
+      e.preventDefault();
+      showToast();
+    });
+
+    close?.addEventListener("click", () => toast.classList.remove("show"));
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+  
 </body>
 </html>
