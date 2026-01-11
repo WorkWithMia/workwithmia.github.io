@@ -4860,6 +4860,167 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
     }
   });
 </script>
+
+    <script>
+/* ==========================================
+   ✅ Hot New Releases → OPEN existing Tool Modal
+   Keeps all your other popups/scripts intact.
+   ========================================== */
+(function(){
+  const back  = document.getElementById('toolModalBack');
+  const close = document.getElementById('toolCloseBtn');
+  const title = document.getElementById('toolTopTitle');
+  const cap   = document.getElementById('toolCaptionInline');
+  const stage = document.getElementById('toolStage');
+
+  if(!back || !close || !title || !cap || !stage){
+    console.warn('[ToolModal] Missing modal elements. Check IDs:', {
+      toolModalBack: !!back,
+      toolCloseBtn: !!close,
+      toolTopTitle: !!title,
+      toolCaptionInline: !!cap,
+      toolStage: !!stage
+    });
+    return;
+  }
+
+  // open/close uses your existing CSS: .toolModalBack.isOpen { display:flex; }
+  function openModal(){
+    back.classList.add('isOpen');
+    back.setAttribute('aria-hidden','false');
+    document.documentElement.classList.add('toolsLock');
+    document.body.classList.add('toolsLock');
+  }
+  function closeModal(){
+    back.classList.remove('isOpen');
+    back.setAttribute('aria-hidden','true');
+    document.documentElement.classList.remove('toolsLock');
+    document.body.classList.remove('toolsLock');
+    stage.innerHTML = '';
+    cap.textContent = '';
+  }
+
+  close.addEventListener('click', closeModal);
+  back.addEventListener('click', (e)=>{ if(e.target === back) closeModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && back.classList.contains('isOpen')) closeModal(); });
+
+  // Minimal “renderers” (safe placeholders). Replace later with your real calculators if you already have them.
+  const RENDER = {
+    forecast(){
+      stage.innerHTML = `
+        <div class="toolBox">
+          <label>Sales so far ($)</label>
+          <input id="tSoFar" type="number" inputmode="decimal" placeholder="12450" />
+          <label>Hours elapsed</label>
+          <input id="tElapsed" type="number" inputmode="decimal" placeholder="5" />
+          <label>Hours remaining</label>
+          <input id="tRemain" type="number" inputmode="decimal" placeholder="7" />
+          <button id="tGo" type="button">Forecast total</button>
+          <div class="toolOut" id="tOut">Enter values and click Forecast.</div>
+        </div>
+      `;
+      document.getElementById('tGo').addEventListener('click', ()=>{
+        const soFar   = Number(document.getElementById('tSoFar').value || 0);
+        const elapsed = Number(document.getElementById('tElapsed').value || 0);
+        const remain  = Number(document.getElementById('tRemain').value || 0);
+        const out     = document.getElementById('tOut');
+        if(elapsed <= 0){ out.textContent = 'Hours elapsed must be > 0.'; return; }
+        const v = soFar / elapsed;
+        const total = soFar + v * remain;
+        out.textContent = `Forecast: $${total.toLocaleString(undefined,{maximumFractionDigits:0})} • Velocity: $${v.toFixed(2)}/hr`;
+      });
+    },
+    roi(){
+      stage.innerHTML = `
+        <div class="toolBox">
+          <label>Gain (G)</label>
+          <input id="tG" type="number" inputmode="decimal" placeholder="8000" />
+          <label>Cost (C)</label>
+          <input id="tC" type="number" inputmode="decimal" placeholder="2000" />
+          <button id="tGo" type="button">Calculate ROI</button>
+          <div class="toolOut" id="tOut">ROI = (G - C) ÷ C × 100</div>
+        </div>
+      `;
+      document.getElementById('tGo').addEventListener('click', ()=>{
+        const G = Number(document.getElementById('tG').value || 0);
+        const C = Number(document.getElementById('tC').value || 0);
+        const out = document.getElementById('tOut');
+        if(C <= 0){ out.textContent = 'Cost (C) must be > 0.'; return; }
+        out.textContent = `ROI: ${(((G - C)/C)*100).toFixed(2)}%`;
+      });
+    },
+    pert(){
+      stage.innerHTML = `
+        <div class="toolBox">
+          <label>Optimistic (O)</label>
+          <input id="tO" type="number" inputmode="decimal" placeholder="3" />
+          <label>Most likely (M)</label>
+          <input id="tM" type="number" inputmode="decimal" placeholder="5" />
+          <label>Pessimistic (P)</label>
+          <input id="tP" type="number" inputmode="decimal" placeholder="9" />
+          <button id="tGo" type="button">Calculate PERT</button>
+          <div class="toolOut" id="tOut">Expected = (O + 4M + P) / 6</div>
+        </div>
+      `;
+      document.getElementById('tGo').addEventListener('click', ()=>{
+        const O = Number(document.getElementById('tO').value || 0);
+        const M = Number(document.getElementById('tM').value || 0);
+        const P = Number(document.getElementById('tP').value || 0);
+        const expected = (O + 4*M + P) / 6;
+        const sd = (P - O) / 6;
+        const lo = expected - 1.645*sd;
+        const hi = expected + 1.645*sd;
+        document.getElementById('tOut').textContent =
+          `Expected: ${expected.toFixed(2)} • ~90% range: ${lo.toFixed(2)} – ${hi.toFixed(2)}`;
+      });
+    },
+    mde(){
+      stage.innerHTML = `
+        <div class="toolBox">
+          <label>ROAS</label>
+          <input id="tRoas" type="number" inputmode="decimal" placeholder="2.8" />
+          <label>CPA vs target (+% or -%)</label>
+          <input id="tCpa" type="number" inputmode="decimal" placeholder="15" />
+          <button id="tGo" type="button">Get recommendation</button>
+          <div class="toolOut" id="tOut">Fill fields then run.</div>
+        </div>
+      `;
+      document.getElementById('tGo').addEventListener('click', ()=>{
+        const roas = Number(document.getElementById('tRoas').value || 0);
+        const cpa  = Number(document.getElementById('tCpa').value || 0);
+        const out  = document.getElementById('tOut');
+        if(roas >= 3 && cpa <= 0) out.textContent = 'Recommendation: SCALE ✅';
+        else if(roas >= 2 && cpa <= 10) out.textContent = 'Recommendation: OPTIMIZE / REALLOCATE ⚙️';
+        else out.textContent = 'Recommendation: FIX or PAUSE ⛔';
+      });
+    }
+  };
+
+  function openFromCard(card){
+    const toolKey = card.getAttribute('data-tool');
+    title.textContent = card.getAttribute('data-title') || 'Details';
+    cap.textContent   = card.getAttribute('data-caption') || '';
+    openModal();
+    stage.innerHTML = '';
+    (RENDER[toolKey] ? RENDER[toolKey]() : (stage.innerHTML = `<div class="toolOut">No tool for "${toolKey}".</div>`));
+  }
+
+  // ✅ Capture phase so it works even if other scripts also listen
+  document.addEventListener('click', (e)=>{
+    const card = e.target.closest?.('.hotCard');
+    if(!card) return;
+    openFromCard(card);
+  }, true);
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key !== 'Enter' && e.key !== ' ') return;
+    const card = document.activeElement?.closest?.('.hotCard');
+    if(!card) return;
+    e.preventDefault();
+    openFromCard(card);
+  });
+})();
+</script>
     
 </body>
 </html>
