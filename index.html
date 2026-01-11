@@ -3962,6 +3962,11 @@ document.addEventListener('keydown', (e)=>{
     const toolTopTitle  = document.getElementById('toolTopTitle');
     const toolCaptionInline = document.getElementById('toolCaptionInline');
 
+if(!toolModalBack || !toolCloseBtn || !toolStageEl || !toolTopTitle || !toolCaptionInline){
+  console.log('MISSING TOOL MODAL ELEMENTS', {toolModalBack, toolCloseBtn, toolStageEl, toolTopTitle, toolCaptionInline});
+  return;
+}
+      
     function openToolModal(){
       toolModalBack.classList.add('isOpen');
       document.body.style.overflow = 'hidden';
