@@ -4859,7 +4859,18 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
   window.addEventListener('load', applyScale, { passive:true });
 })();
 </script>
-  
+
+<script>
+  // ✅ Apply data-gif to each card's .hotImg as a CSS variable layer
+  document.querySelectorAll('#hot-new-releases .hotCard').forEach(card=>{
+    const gif = card.getAttribute('data-gif');
+    const img = card.querySelector('.hotImg');
+    if(gif && img){
+      img.style.setProperty('--gif', `url("${gif}")`);
+    }
+  });
+</script>
+    
 </body>
 </html>
 
