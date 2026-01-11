@@ -3357,13 +3357,21 @@
     }
     access.addEventListener('click', runAccessEscalation);
 
-    // ESC closes overlays
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape'){
-        closeTopSecret();
-        closePF();
-      }
-    });
+   // ESC closes overlays
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){
+
+    // ✅ Close tool modal ONLY if it's open
+    if (typeof toolModalBack !== 'undefined' &&
+        toolModalBack.classList.contains('isOpen')) {
+      closeToolModal();
+    }
+
+    // Existing overlays (keep these)
+    closeTopSecret();
+    closePF();
+  }
+});
 
     // Init
     renderTabs();
