@@ -830,17 +830,19 @@
     }
     .popupText { font-size: 14px; font-weight: 650; color: rgba(17,17,17,.90); }
     .popupPercent { font-size: 13px; color: rgba(0,0,0,0.6); font-weight: 800; }
-    .barWrap {
-      height: 8px;
-      width: 100%;
-      background: rgba(0,0,0,0.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-   .bar {
+    /* ✅ POPUP progress bar (scoped safely) */
+.popup .barWrap{
+  height: 8px;
+  width: 100%;
+  background: rgba(0,0,0,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.popup .bar{
   height: 100%;
   width: 0%;
-  background: var(--green);
+  background: var(--green, #0FA958);
   border-radius: 999px;
 
   /* 🔑 mobile rendering fix */
