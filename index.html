@@ -4758,6 +4758,42 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
     }
   });
 </script>
+
+  <script>
+(function(){
+  const fit = document.getElementById('crIntentFit');
+  const rail = document.getElementById('crIntentRail');
+  if(!fit || !rail) return;
+
+  function applyScale(){
+    // Reset first so we measure true width
+    rail.style.transform = 'scale(1)';
+
+    // Available width inside wrapper
+    const fitW = fit.clientWidth;
+
+    // True width of the rail contents (no wrapping)
+    const railW = rail.scrollWidth;
+
+    // Scale down only if needed
+    const s = Math.min(1, fitW / railW);
+
+    rail.style.transform = `scale(${s})`;
+
+    // Optional: tighten vertical space when scaled
+    // (keeps the section from feeling too tall on mobile)
+    rail.style.margin = s < 1 ? '6px 0' : '0';
+  }
+
+  // Run now + on resize + when fonts load
+  applyScale();
+
+  const ro = new ResizeObserver(applyScale);
+  ro.observe(fit);
+
+  window.addEventListener('load', applyScale, { passive:true });
+})();
+</script>
   
 </body>
 </html>
