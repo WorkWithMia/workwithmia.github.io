@@ -1433,6 +1433,13 @@
       .dqRow{ align-items:flex-start; }
       .dqRightRow{ justify-content:flex-start; }
     }
+
+    /* Top Secret modal: remove meta separator dot */
+.dqMeta span::after,
+.dqMeta span::before {
+  content: none !important;
+}
+    
   </style>
 </head>
 
