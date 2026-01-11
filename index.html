@@ -2352,15 +2352,16 @@
       text-overflow:ellipsis;
     }
     .meta{
-      margin-top: 6px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-      color: rgba(10,12,14,.62);
-      font-weight: 900;
-      font-family: var(--tabFont);
-    }
+  margin-top: 6px;
+  display:flex;
+  flex-direction: column;   /* ← ADD THIS LINE */
+  gap: 8px;
+  align-items:center;
+  text-align:center;
+  color: rgba(10,12,14,.62);
+  font-weight: 900;
+  font-family: var(--tabFont);
+}
     .dot{ width:4px; height:4px; border-radius:50%; background: rgba(10,12,14,.40); display:inline-block; }
     .redact{
       letter-spacing:.12em;
