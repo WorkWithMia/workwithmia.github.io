@@ -3951,6 +3951,8 @@ document.addEventListener('keydown', (e)=>{
   });
 })();
 
+    document.addEventListener('DOMContentLoaded', () => {
+
     // =========================================================
     // ✅ TOOL MODAL OPEN/CLOSE + TOOLS LOGIC
     // =========================================================
@@ -4422,6 +4424,7 @@ document.addEventListener('keydown', (e)=>{
   e.preventDefault();
   openToolFromCard(card);
 });
+      }); // ✅ END DOMContentLoaded (TOOLS ONLY)
 
     // =========================================================
     // ✅ QUALIFICATIONS FILE LOGIC (tabs, search, Top Secret reveal)
