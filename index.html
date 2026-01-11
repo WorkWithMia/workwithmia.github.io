@@ -1433,10 +1433,18 @@
       .dqRightRow{ justify-content:flex-start; }
     }
 
-    /* Top Secret modal: remove meta separator dot */
-.dqMeta span::after,
-.dqMeta span::before {
+   /* ✅ TOP SECRET: kill any pseudo-element separators */
+.dqMeta::before,
+.dqMeta::after,
+.dqMeta > *::before,
+.dqMeta > *::after{
   content: none !important;
+  display: none !important;
+}
+
+/* ✅ In case a leftover dqDot element still exists somewhere */
+.dqMeta .dqDot{
+  display: none !important;
 }
     
   </style>
