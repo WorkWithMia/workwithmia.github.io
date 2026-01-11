@@ -629,25 +629,32 @@
   will-change: transform;
 }
 
+/* ============================================
+   Intent Pills – Core Styles
+   ============================================ */
+
 /* Pills */
 .crIntent__pill{
-  flex:0 0 auto;
-  display:flex;
-  align-items:center;
-  gap:12px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-  height:64px;
-  padding:0 18px;
-  width:260px;
+  height: 64px;
+  padding: 0 18px;
+  width: 260px;
 
-  background:#fff;
-  border:1px solid rgba(0,0,0,.10);
-  border-radius:18px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 18px;
+
+  cursor: default; /* Intent Pills – Cursor Neutralization */
 }
 
+/* Pill label */
 .crIntent__label{
-  font-weight:850;
-  white-space:nowrap;
+  font-weight: 700;      /* system-font safe bold */
+  white-space: nowrap;
 }
 
     /* ✅ keeps anchor targets from hiding under sticky topbar */
