@@ -365,6 +365,7 @@
       transition: transform .18s var(--easeApple), box-shadow .18s var(--easeApple);
       z-index: 2;
     }
+    
     .pin::before{ content:""; position:absolute; inset:-18px; border-radius:999px; }
     .pin::after{
       content:"";
@@ -585,55 +586,69 @@
       backdrop-filter: blur(10px);
       pointer-events:none;
     }
+/* ==============================
+   ✅ Coursera-style intent rail
+   LOCKED (no wrap, no swipe, auto-fit)
+   ============================== */
 
-    /* ==============================
-       ✅ Coursera-style intent rail
-       (fixed one-row, swipe on mobile)
-       ============================== */
-    .crIntent{
-      background:#EEF5FF;
-      border-radius:28px;
-      padding:26px 22px 20px;
-    }
+.crIntent{
+  background:#EEF5FF;
+  border-radius:28px;
+  padding:26px 22px 20px;
+  text-align:center;
+  overflow:hidden; /* safety */
+}
 
-    .crIntent__title{
-      margin:0 0 18px;
-      text-align:center;
-      font-weight:950;
-      letter-spacing:-.025em;
-      white-space:nowrap;
-      font-size:clamp(16px,3.2vw,28px);
-    }
+.crIntent__title{
+  margin:0 0 18px;
+  text-align:center;
+  font-weight:950;
+  letter-spacing:-.025em;
+  white-space:nowrap;
+  font-size:clamp(16px,3.2vw,28px);
+}
 
-    .crIntent__rail{
-      display:flex;
-      gap:18px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:nowrap;
-      overflow-x:auto;
-      scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch;
-    }
+/* Fit wrapper: hides overflow + provides a stable measuring box */
+.crIntent__fit{
+  width:100%;
+  overflow:hidden;              /* 🚫 no swipe */
+  display:flex;
+  justify-content:center;
+}
 
-    .crIntent__pill{
-      flex:0 0 auto;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      height:64px;
-      padding:0 18px;
-      width:260px;
-      background:#fff;
-      border:1px solid rgba(0,0,0,.1);
-      border-radius:18px;
-      scroll-snap-align:center;
-    }
+/* The row: stays one line forever */
+.crIntent__rail{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:nowrap;
+  white-space:nowrap;
 
-    .crIntent__label{
-      font-weight:850;
-      white-space:nowrap;
-    }
+  transform-origin:center;
+  will-change: transform;
+}
+
+/* Pills */
+.crIntent__pill{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  height:64px;
+  padding:0 18px;
+  width:260px;
+
+  background:#fff;
+  border:1px solid rgba(0,0,0,.10);
+  border-radius:18px;
+}
+
+.crIntent__label{
+  font-weight:850;
+  white-space:nowrap;
+}
 
     /* ✅ keeps anchor targets from hiding under sticky topbar */
     #education-map, #hot-new-releases, #qualifications-file { scroll-margin-top: 70px; }
@@ -1697,32 +1712,34 @@
       </div>
     </section>
 
-    <!-- ✅ Coursera-style “What brings you…” (fixed one-row rail) -->
-    <section class="section crIntent" aria-label="Portfolio intent">
-      <h2 class="crIntent__title">What brings you to my portfolio today?</h2>
+  <!-- ✅ Coursera-style “What brings you…” (LOCKED: fits any width, no swipe) -->
+<section class="section crIntent" aria-label="Portfolio intent">
+  <h2 class="crIntent__title">What brings you to my portfolio today?</h2>
 
-      <div class="crIntent__rail">
-        <button class="crIntent__pill">
-          <span class="crIntent__icon">👤</span>
-          <span class="crIntent__label">Meet Mia</span>
-        </button>
+  <div class="crIntent__fit" id="crIntentFit">
+    <div class="crIntent__rail" id="crIntentRail">
+      <button class="crIntent__pill">
+        <span class="crIntent__icon">👤</span>
+        <span class="crIntent__label">Meet Mia</span>
+      </button>
 
-        <button class="crIntent__pill">
-          <span class="crIntent__icon">🛠️</span>
-          <span class="crIntent__label">Inspect my toolkit</span>
-        </button>
+      <button class="crIntent__pill">
+        <span class="crIntent__icon">🛠️</span>
+        <span class="crIntent__label">Inspect my toolkit</span>
+      </button>
 
-        <button class="crIntent__pill">
-          <span class="crIntent__icon">📈</span>
-          <span class="crIntent__label">Experience live demos</span>
-        </button>
+      <button class="crIntent__pill">
+        <span class="crIntent__icon">📈</span>
+        <span class="crIntent__label">Experience live demos</span>
+      </button>
 
-        <button class="crIntent__pill">
-          <span class="crIntent__icon">🤝</span>
-          <span class="crIntent__label">Build something together</span>
-        </button>
-      </div>
-    </section>
+      <button class="crIntent__pill">
+        <span class="crIntent__icon">🤝</span>
+        <span class="crIntent__label">Build something together</span>
+      </button>
+    </div>
+  </div>
+</section>
 
     <!-- =========================
          MY TOOLKIT — Red Toolbox (click to open)
@@ -1794,6 +1811,7 @@
     </section>
 
     <style>
+
       /* =========================
          Red Toolbox (open/close)
       ========================= */
