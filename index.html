@@ -453,71 +453,143 @@
     }
 
     /* ==============================
-       HOT NEW RELEASES 
-       ============================== */
-    .hotWrap{
-      border-radius: 34px;
-      background: linear-gradient(90deg, #1d66ff, #36b6ff, #43d7b4);
-      padding: 18px;
-      box-shadow: 0 26px 90px rgba(0,0,0,.12);
-    }
-    .hotTitle{
-      color: rgba(255,255,255,.95);
-      font-weight: 950;
-      letter-spacing: -.01em;
-      margin: 0 0 12px;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      font-size: 18px;
-    }
-    .hotTitle svg{ width: 18px; height: 18px; stroke:#fff; stroke-width:2.6; fill:none; }
+   HOT NEW RELEASES 
+   ============================== */
+.hotWrap{
+  border-radius: 34px;
+  background: linear-gradient(90deg, #1d66ff, #36b6ff, #43d7b4);
+  padding: 18px;
+  box-shadow: 0 26px 90px rgba(0,0,0,.12);
+}
 
-    .hotRail{
-      display:flex;
-      gap: 18px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 4px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width:none;
-    }
-    .hotRail::-webkit-scrollbar{ display:none; }
+.hotTitle{
+  color: rgba(255,255,255,.95);
+  font-weight: 950;
+  letter-spacing: -.01em;
+  margin: 0 0 12px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 18px;
+}
+.hotTitle svg{ width: 18px; height: 18px; stroke:#fff; stroke-width:2.6; fill:none; }
 
-    .hotCard{
-      position: relative;
-      scroll-snap-align: start;
-      flex: 0 0 auto;
-      width: min(320px, calc(100vw - 96px));
-      border-radius: 22px;
-      background: rgba(255,255,255,.96);
-      border: 1px solid rgba(0,0,0,.10);
-      box-shadow: 0 18px 55px rgba(0,0,0,.12);
-      overflow:hidden;
-      transition: transform .22s var(--easeApple), box-shadow .22s var(--easeApple);
-      cursor: pointer;
-      user-select:none;
-      outline:none;
-    }
-    .hotCard:hover{ transform: translateY(-2px); box-shadow: 0 26px 85px rgba(0,0,0,.16); }
-    .hotCard:active{ transform: translateY(-1px); }
-    .hotCard:focus-visible{ box-shadow: 0 26px 85px rgba(0,0,0,.16), 0 0 0 4px rgba(255,255,255,.55); }
+.hotRail{
+  display:flex;
+  gap: 18px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width:none;
+}
+.hotRail::-webkit-scrollbar{ display:none; }
 
-   .hotImg{
+.hotCard{
+  position: relative;
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: min(320px, calc(100vw - 96px));
+  border-radius: 22px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 18px 55px rgba(0,0,0,.12);
+  overflow:hidden;
+  transition: transform .22s var(--easeApple), box-shadow .22s var(--easeApple);
+  cursor: pointer;
+  user-select:none;
+  outline:none;
+}
+.hotCard:hover{ transform: translateY(-2px); box-shadow: 0 26px 85px rgba(0,0,0,.16); }
+.hotCard:active{ transform: translateY(-1px); }
+.hotCard:focus-visible{ box-shadow: 0 26px 85px rgba(0,0,0,.16), 0 0 0 4px rgba(255,255,255,.55); }
+
+/* ✅ GIF + overlay layering
+   JS will set --gif: url(...)
+*/
+.hotImg{
   height: 170px;
-
-  /* GIF behavior */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-
-  /* Gradient overlay (kept, but separated) */
   background-image:
+    var(--gif, none),
     radial-gradient(700px 260px at 30% 15%, rgba(0,122,255,.18), rgba(255,255,255,0) 60%),
     radial-gradient(540px 240px at 70% 70%, rgba(67,215,180,.20), rgba(255,255,255,0) 62%),
     linear-gradient(135deg, rgba(0,0,0,.08), rgba(0,0,0,.02));
 }
-    .hotBody{ padding: 14px 14px 16px; }
+
+.hotBody{ padding: 14px 14px 16px; }
+
+/* ✅ Color indicators for every tool card */
+.catDot{
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  background: var(--blue);
+  box-shadow: 0 8px 18px rgba(0,0,0,.10);
+  flex: 0 0 auto;
+}
+.catDot.isSales{ background: var(--blue); }
+.catDot.isOps{ background: var(--amber); }
+.catDot.isMarketing{ background: var(--green); }
+
+.hotBrand{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  color: rgba(17,17,17,.68);
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.hotBrand .miniLogo{
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.8);
+  display:grid; place-items:center;
+  font-weight: 950;
+  font-size: 12px;
+  color: rgba(17,17,17,.62);
+}
+
+.hotName{
+  margin: 0 0 10px;
+  font-weight: 950;
+  letter-spacing: -.01em;
+  line-height: 1.15;
+  font-size: 18px;
+}
+
+.hotMeta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color: rgba(17,17,17,.60);
+  font-weight: 700;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* ✅ Top Pick badge */
+.topPickBadge{
+  position:absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.96);
+  background: rgba(239,68,68,.94);
+  border: 1px solid rgba(255,255,255,.45);
+  box-shadow: 0 12px 30px rgba(239,68,68,.22);
+  backdrop-filter: blur(10px);
+  pointer-events:none;
+} /* ✅ THIS CLOSING BRACE WAS MISSING */
 
     /* ✅ Color indicators for every tool card */
     .catDot{
