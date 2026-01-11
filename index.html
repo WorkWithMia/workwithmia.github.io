@@ -2717,67 +2717,141 @@
     </div>
   </div>
 
-  <!-- =========================
-       PERSONNEL FILE OVERLAY
-       ========================= -->
-  <div class="pfBack" id="pfBack" aria-hidden="true">
-    <div class="pfDim" id="pfDim"></div>
+ <!-- =========================
+     PERSONNEL FILE OVERLAY
+     ========================= -->
+<div class="pfBack" id="pfBack" aria-hidden="true">
+  <div class="pfDim" id="pfDim"></div>
 
-    <div class="pfSheet" role="dialog" aria-modal="true" aria-label="Personnel File">
-      <div class="pfSheetInner">
-        <div class="pfTop">
-          <div class="pfTitle">
-            <div class="ucrMark" title="UCR mark">
-              <img src="https://commons.wikimedia.org/wiki/Special:FilePath/UC%20Riverside%20logo.svg" alt="UCR">
-            </div>
-            <div>
-              <h3>PERSONNEL FILE</h3>
-              <p>Mia Lavana</p>
-            </div>
+  <div class="pfSheet" role="dialog" aria-modal="true" aria-label="Personnel File">
+    <div class="pfSheetInner">
+
+      <!-- HEADER -->
+      <div class="pfTop">
+        <div class="pfTitle">
+          <div class="ucrMark" title="Affiliation mark">
+            <img
+              src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM25vMTRsdjhkOGgxMzR5Zm83dWJlcmEzZXhsdGN4cW14eDM1d2xhaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oeSAOPx2gD1PkEE48/giphy.gif"
+              alt="Face Scan"
+            >
           </div>
-
-          <button class="pfClose" id="pfClose" type="button">Close</button>
+          <div>
+            <h3>PERSONNEL FILE</h3>
+            <p>Mia Lavana · FILE PF-021-ML · STATUS: PUBLIC</p>
+          </div>
         </div>
 
-        <div class="pfBody">
-          <div class="pfGrid">
-            <div>
-              <div class="kvGrid">
-                <div class="kv"><div class="k">Name</div><div class="v">Mia Lavana</div></div>
-                <div class="kv"><div class="k">School</div><div class="v">UCR</div></div>
-                <div class="kv"><div class="k">Graduated</div><div class="v">Magna Cum Laude</div></div>
-                <div class="kv"><div class="k">Grade</div><div class="v">3.8 GPA</div></div>
-              </div>
+        <button class="pfClose" id="pfClose" type="button">Close</button>
+      </div>
 
-              <div class="section">
-                <h4>Skills</h4>
-                <div class="chips">
-                  <div class="chip">Skydiving</div>
-                  <div class="chip">Racing cars</div>
-                  <div class="chip">MMA</div>
-                  <div class="chip">Kali / Stick</div>
-                  <div class="chip">Combat fighting</div>
-                  <div class="chip">Weapons training (general)</div>
-                </div>
-              </div>
+      <!-- BODY -->
+      <div class="pfBody">
+        <div class="pfGrid">
 
-              <div class="section">
-                <h4>Notes</h4>
-                <div class="note">Enjoys attending Secret Service webinars.</div>
+          <!-- LEFT COLUMN -->
+          <div class="pfMain">
+
+            <div class="kvGrid">
+              <div class="kv"><div class="k">Name</div><div class="v">Mia Lavana</div></div>
+              <div class="kv"><div class="k">Education</div><div class="v">Business Administration</div></div>
+              <div class="kv"><div class="k">Honors</div><div class="v">Magna Cum Laude</div></div>
+              <div class="kv"><div class="k">Academic Rating</div><div class="v">3.8 GPA</div></div>
+            </div>
+
+            <div class="section">
+              <h4>Skills & Proficiencies</h4>
+              <div class="chips">
+                <div class="chip">Airborne Familiarization</div>
+                <div class="chip">High-Performance Vehicle Handling</div>
+                <div class="chip">Defensive Tactics (Hand-to-Hand)</div>
+                <div class="chip">Impact Weapons Training</div>
+                <div class="chip">Close-Quarters Combat</div>
+                <div class="chip">Weapons Familiarization (General)</div>
               </div>
             </div>
 
-            <aside class="pfId">
-              <div class="frame">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=70" alt="ID Photo">
+            <div class="section">
+              <h4>Cognitive Profile</h4>
+              <div class="chips">
+                <div class="chip">ENTJ</div>
+                <div class="chip">Analytical</div>
+                <div class="chip">High Situational Awareness</div>
+                <div class="chip">Stress-Tolerant</div>
+                <div class="chip">Rapid Decision Making</div>
               </div>
-              <div class="cap">ID PHOTO</div>
-            </aside>
+            </div>
+
+            <div class="section">
+              <h4>Field Interests</h4>
+              <div class="chips">
+                <div class="chip">Protective Intelligence</div>
+                <div class="chip">Threat Assessment</div>
+                <div class="chip">Behavioral Analysis</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <h4>Remarks</h4>
+              <div class="note">
+                Demonstrates sustained interest in protective intelligence training and threat analysis disciplines.
+              </div>
+            </div>
+
           </div>
+
+          <!-- RIGHT COLUMN -->
+          <aside class="pfId">
+            <div class="frame">
+              <img
+                src="./assets/photo-id.jpg"
+                alt="ID Photo"
+                loading="lazy"
+              >
+            </div>
+            <div class="cap">FILE PHOTO</div>
+          </aside>
+
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- =========================
+     MOBILE AUTO-FIT (NO SCROLL)
+     ========================= -->
+<script>
+(function(){
+  function fitPF(){
+    const back = document.getElementById('pfBack');
+    const sheet = back && back.querySelector('.pfSheet');
+    if(!sheet) return;
+
+    sheet.style.setProperty('--pfScale', 1);
+
+    if (window.matchMedia('(max-width: 860px)').matches){
+      const vh = window.innerHeight;
+      const rect = sheet.getBoundingClientRect();
+      const maxH = vh - 20;
+      const scale = Math.min(1, maxH / rect.height);
+      sheet.style.setProperty('--pfScale', scale.toFixed(4));
+    } else {
+      sheet.style.setProperty('--pfScale', 1);
+    }
+  }
+
+  window.addEventListener('resize', fitPF, {passive:true});
+  window.addEventListener('orientationchange', fitPF);
+
+  setTimeout(fitPF, 60);
+
+  const back = document.getElementById('pfBack');
+  if(back){
+    const obs = new MutationObserver(() => setTimeout(fitPF, 30));
+    obs.observe(back, { attributes:true, attributeFilter:['class','style','aria-hidden'] });
+  }
+})();
+</script>
 
   <!-- =========================
        TOP SECRET / HACKING MODAL
