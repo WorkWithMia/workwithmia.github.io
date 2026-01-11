@@ -4249,7 +4249,7 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
         const org = item.org || '';
         const kind = item.kind || 'Course';
         const safeTitle = item.title || 'Credential';
-        const safeOrg = org || 'Organization';
+        const safeOrg = (org || 'Organization').replace(/[•·]/g, '').trim();
 
         const hasLogo = Boolean(logo);
         const fallback = initials(org);
