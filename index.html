@@ -4400,9 +4400,20 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
       openToolModal();
     }
 
-    document.querySelectorAll('.hotCard').forEach(card=>{
-      clicky(card, ()=> openToolFromCard(card));
-    });
+    // ✅ Event delegation (works even if cards change later)
+document.addEventListener('click', (e)=>{
+  const card = e.target.closest?.('.hotCard');
+  if(!card) return;
+  openToolFromCard(card);
+}, true);
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const card = document.activeElement?.closest?.('.hotCard');
+  if(!card) return;
+  e.preventDefault();
+  openToolFromCard(card);
+});
 
     // =========================================================
     // ✅ QUALIFICATIONS FILE LOGIC (tabs, search, Top Secret reveal)
