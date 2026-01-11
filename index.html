@@ -2578,6 +2578,18 @@
        Removed the responsive @media changes so the layout stays desktop-locked.
        Mobile now ONLY scales uniformly (no reflow).
     */
+    
+/* ✅ Qualifications File: force LEFT alignment (safe + simple) */
+.dossierWrap .folder *{
+  text-align: left;
+}
+
+/* Fix flex-centering inside credential rows */
+.dossierWrap .folder [style],
+.dossierWrap .folder div{
+  align-items: flex-start;
+}
+    
   </style>
 
   <!-- Desktop-lock viewport + scaler -->
