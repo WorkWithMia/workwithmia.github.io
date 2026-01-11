@@ -1570,7 +1570,11 @@
         </h2>
 
         <div class="hotRail" aria-label="Hot New Releases tools">
-         <article class="hotCard" id="retailSalesForecast" tabindex="0" role="button"
+        <article class="hotCard"
+  id="retailSalesForecast"
+  tabindex="0"
+  role="button"
+  data-gif="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWVpY3U4d2FoMTU3MG4xNXR4cGEwZzZneHExb2VqZGttdTloZnQ0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LkNg7IAc8pp8ZrSKvi/giphy.gif"
             data-tool="forecast"
             data-title="Retail Sales Forecast Calculator"
             data-caption="Forecast today’s totals using your current velocity.">
@@ -1584,9 +1588,10 @@
           </article>
 
           <article class="hotCard" tabindex="0" role="button"
-            data-tool="roi"
-            data-title="ROI Calculator"
-            data-caption="ROI = (G − C) ÷ C × 100.">
+  data-tool="roi"
+  data-title="ROI Calculator"
+  data-caption="ROI = (G - C) ÷ C × 100."
+  data-gif="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3VudjEycHluMjZ1NDEzYzY2cTB2M2I5ZGRrcGQwMTNkdmJoaGpuciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bBnyCuizPVAz1WOutR/giphy.gif">
             <div class="hotImg"></div>
             <div class="hotBody">
               <div class="hotBrand"><span class="catDot isSales"></span><span class="miniLogo">★</span> Sales</div>
@@ -1596,9 +1601,10 @@
           </article>
 
           <article class="hotCard" tabindex="0" role="button"
-            data-tool="pert"
-            data-title="Time Estimation: Three-Point (PERT)"
-            data-caption="Expected time + a 90% range.">
+  data-tool="pert"
+  data-title="Time Estimation: Three-Point (PERT)"
+  data-caption="Expected time + a 90% range."
+  data-gif="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHR2OG92OTJsaGkzNWhjb2lnMmx5MnhrMnRsZnJoNG9rYmF6aDV5eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PUoyDvmNbrdVkR9PbA/giphy.gif">
             <div class="hotImg"></div>
             <div class="hotBody">
               <div class="hotBrand"><span class="catDot isOps"></span><span class="miniLogo">★</span> Operations</div>
@@ -1607,10 +1613,11 @@
             </div>
           </article>
 
-          <article class="hotCard" tabindex="0" role="button"
-            data-tool="mde"
-            data-title="Marketing Decision Engine"
-            data-caption="Scale, Fix, Reallocate, or Pause.">
+         <article class="hotCard" tabindex="0" role="button"
+  data-tool="mde"
+  data-title="Marketing Decision Engine"
+  data-caption="Scale, Fix, Reallocate, or Pause."
+  data-gif="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnFpdDh2N3AzeGp6bWt3M3FucHVuZGl0aHZ6ZzB5aDRvcjM0c21sdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tl1PNUBF7RKcCOcqpU/giphy.gif">
             <span class="topPickBadge" aria-hidden="true">Top Pick</span>
             <div class="hotImg"></div>
             <div class="hotBody">
@@ -4533,6 +4540,16 @@ Max CPA = AOV × Margin × Influence = ${maxCpa}`;
     init();
   }
 })();
+</script>
+  
+  <script>
+  document.querySelectorAll('.hotCard').forEach(card => {
+    const gif = card.dataset.gif;
+    const media = card.querySelector('.hotImg');
+    if (gif && media) {
+      media.style.backgroundImage = `url(${gif})`;
+    }
+  });
 </script>
   
 </body>
